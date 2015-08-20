@@ -7,12 +7,13 @@ var minifyCss = require( 'gulp-minify-css' );
 var autoprefixer = require( 'gulp-autoprefixer' );
 
 var cssFiles = [
-    'css/layout.css',
-    'css/bundle.css'
+  'css/basscss.min.css',
+  'css/font-awesome.min.css',
+  'css/style.css'
 ]
 
 /* Tache lancer par defaut par gulp */
-gulp.task( 'default', ['scripts', 'scss','concatCSS','watch'] );
+gulp.task( 'default', ['scss','concatCSS','watch'] );
 
 /* Tache SCSS -> CSS -> Concat -> Minify */
 gulp.task('scss',function(){
@@ -28,12 +29,13 @@ gulp.task('scss',function(){
 });
 
 gulp.task('concatCSS',function(){
-    return gulp.src(['css/layout.css','css/bundle.css'])
+    return gulp.src(cssFiles)
         .pipe(concat('style.css'))
         .pipe(gulp.dest('css'))
         .pipe(minifyCss())
         .pipe(rename('style.min.css'))
         .pipe(gulp.dest('css'));
+
 })
 
 gulp.task('scripts', function() {
@@ -45,5 +47,6 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('watch',function(){
-	gulp.watch('scss/*.scss',['scss','concatCSS']);
+	gulp.watch('scss/*.scss',['scss']);
+	gulp.watch('css/style.css',['concatCSS']);
 });
